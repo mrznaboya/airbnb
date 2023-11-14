@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { useWamUpBrowser } from "@/hooks/useWarmUpBrowser";
+import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import { defaultStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,7 +20,7 @@ enum Strategy {
 }
 
 const Page = () => {
-  useWamUpBrowser();
+  useWarmUpBrowser();
   const router = useRouter();
   const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
   const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
