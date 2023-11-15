@@ -4,44 +4,64 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import Colors from "@/constants/Colors";
+import { useRef, useState } from "react";
+import * as Haptics from "expo-haptics";
 
 const categories = [
   {
-    id: 1,
     name: "Home",
     icon: "home",
   },
   {
-    id: 2,
-    name: "Apartments",
-    icon: "apartments",
+    name: "Bedrooms",
+    icon: "king-bed",
   },
   {
-    id: 3,
-    name: "Condo",
-    icon: "condo",
+    name: "Bathrooms",
+    icon: "bathtub",
   },
   {
-    id: 4,
-    name: "Office",
-    icon: "office",
+    name: "Kitchen",
+    icon: "kitchen",
   },
   {
-    id: 5,
-    name: "Villa",
-    icon: "villa",
+    name: "Parking",
+    icon: "local-parking",
+  },
+  {
+    name: "Beach",
+    icon: "beach-access",
+  },
+  {
+    name: "City",
+    icon: "location-city",
   },
 ];
 
 const ExploreHeader = () => {
+  const scrollRef = useRef<ScrollView>(null);
+  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const selectCategory = (index: number) => {
+    const selected = itemsRef.current[index];
+    setActiveIndex(index);
+
+    selected?.measure((x) => {
+      scrollRef.current?.scrollTo({ x: x - 16, y: 0, animated: true });
+    });
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFF" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           <Link href={"/(modals)/booking"} asChild>
@@ -59,6 +79,45 @@ const ExploreHeader = () => {
             <Ionicons name="options-outline" size={24} />
           </TouchableOpacity>
         </View>
+
+        <ScrollView
+          ref={scrollRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: "center",
+            gap: 30,
+            paddingHorizontal: 16,
+          }}
+        >
+          {categories.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              ref={(el) => (itemsRef.current[index] = el)}
+              style={
+                activeIndex === index
+                  ? styles.categoriesBtnActive
+                  : styles.categoriesBtn
+              }
+              onPress={() => selectCategory(index)}
+            >
+              <MaterialIcons
+                name={item.icon as any}
+                size={24}
+                color={activeIndex === index ? "#000" : Colors.grey}
+              />
+              <Text
+                style={
+                  activeIndex === index
+                    ? styles.categoryTextActive
+                    : styles.categoryText
+                }
+              >
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -66,41 +125,65 @@ const ExploreHeader = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFF",
+    backgroundColor: "#FFF",
     height: 130,
   },
   actionRow: {
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
     justifyContent: "space-between",
     paddingHorizontal: 24,
-    paddingVertical: 16,
-    gap: 10,
+    paddingBottom: 16,
   },
   filterBtn: {
-    padding: 10,
-    borderWidth: 1,
     borderColor: Colors.grey,
     borderRadius: 24,
+    borderWidth: 1,
+    padding: 10,
   },
   searchBtn: {
-    flexDirection: "row",
-    flex: 1,
     alignItems: "center",
-    borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: "#FFF",
     borderColor: "#C2C2C2",
+    borderRadius: 30,
+    borderWidth: StyleSheet.hairlineWidth,
+    elevation: 2,
+    flex: 1,
+    flexDirection: "row",
     gap: 10,
+    padding: 14,
+    shadowColor: "#000",
     shadowOffset: {
       width: 1,
       height: 1,
     },
-    elevation: 2,
-    shadowColor: "#000",
     shadowOpacity: 0.12,
     shadowRadius: 8,
-    padding: 14,
-    borderRadius: 30,
-    backgroundColor: "#FFFFFF",
+  },
+  categoryText: {
+    fontFamily: "mon-sb",
+    fontSize: 14,
+    color: Colors.grey,
+  },
+  categoryTextActive: {
+    fontFamily: "mon-sb",
+    fontSize: 14,
+    color: "#000",
+  },
+  categoriesBtn: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    paddingBottom: 8,
+  },
+  categoriesBtnActive: {
+    alignItems: "center",
+    borderBottomColor: "#000",
+    borderBottomWidth: 2,
+    flex: 1,
+    justifyContent: "center",
+    paddingBottom: 8,
   },
 });
 
