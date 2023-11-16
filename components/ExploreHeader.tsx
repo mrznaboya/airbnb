@@ -16,36 +16,40 @@ import * as Haptics from "expo-haptics";
 
 const categories = [
   {
-    name: "Home",
+    name: "Tiny homes",
     icon: "home",
   },
   {
-    name: "Bedrooms",
-    icon: "king-bed",
+    name: "Cabins",
+    icon: "house-siding",
   },
   {
-    name: "Bathrooms",
-    icon: "bathtub",
+    name: "Trending",
+    icon: "local-fire-department",
   },
   {
-    name: "Kitchen",
-    icon: "kitchen",
-  },
-  {
-    name: "Parking",
-    icon: "local-parking",
-  },
-  {
-    name: "Beach",
-    icon: "beach-access",
+    name: "Play",
+    icon: "videogame-asset",
   },
   {
     name: "City",
     icon: "location-city",
   },
+  {
+    name: "Beachfront",
+    icon: "beach-access",
+  },
+  {
+    name: "Countryside",
+    icon: "park",
+  },
 ];
 
-const ExploreHeader = () => {
+interface Props {
+  onCategoryChanged: (category: string) => void;
+}
+
+const ExploreHeader = ({ onCategoryChanged }: Props) => {
   const scrollRef = useRef<ScrollView>(null);
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -59,6 +63,7 @@ const ExploreHeader = () => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onCategoryChanged(categories[index].name);
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
