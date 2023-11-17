@@ -98,7 +98,10 @@ function RootLayoutNav() {
           ),
         }}
       />
-      <Stack.Screen name="listing/[id]" options={{ title: "" }} />
+      <Stack.Screen
+        name="listing/[id]"
+        options={{ title: "", headerTransparent: true }}
+      />
       <Stack.Screen
         name="(modals)/booking"
         options={{
