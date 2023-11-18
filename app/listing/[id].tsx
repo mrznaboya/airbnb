@@ -29,8 +29,8 @@ const Page = () => {
             {listing.room_type} in {listing.smart_location}
           </Text>
           <Text style={styles.rooms}>
-            {listing.guests_included} guests · {listing.bedrooms} bedrooms ·
-            {listing.bed_type} beds · {listing.bathrooms} bathrooms
+            {listing.guests_included} guests · {listing.bedrooms} bedrooms ·{" "}
+            {listing.beds} beds · {listing.bathrooms} bathrooms
           </Text>
           <View style={{ flexDirection: "row", gap: 4 }}>
             <Ionicons name="star" size={16} />
