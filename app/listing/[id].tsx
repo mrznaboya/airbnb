@@ -5,9 +5,10 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Share,
 } from "react-native";
-import React from "react";
-import { useLocalSearchParams } from "expo-router";
+import React, { useLayoutEffect } from "react";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import listingsData from "@/assets/data/airbnb-listings.json";
 import Animated, {
   SlideInDown,
@@ -30,8 +31,47 @@ const Page = () => {
     (item) => item.id === id
   );
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const navigation = useNavigation();
 
   const scrollOffset = useScrollViewOffset(scrollRef);
+
+  const shareListing = async () => {
+    try {
+      await Share.share({
+        title: listing.name,
+        url: listing.listing_url,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackground: () => (
+        <Animated.View style={[headerAnimatedStyle, styles.header]} />
+      ),
+
+      headerRight: () => (
+        <View style={styles.bar}>
+          <TouchableOpacity style={styles.roundButton} onPress={shareListing}>
+            <Ionicons name="share-outline" size={22} color={"#000"} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.roundButton}>
+            <Ionicons name="heart-outline" size={22} color={"#000"} />
+          </TouchableOpacity>
+        </View>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity
+          style={styles.roundButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="chevron-back" size={24} color={"#000"} />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -51,6 +91,12 @@ const Page = () => {
           ),
         },
       ],
+    };
+  });
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 2], [0, 1]),
     };
   });
 
@@ -193,6 +239,29 @@ const styles = StyleSheet.create({
   footerPrice: {
     fontSize: 18,
     fontFamily: "mon-sb",
+  },
+  bar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+  },
+  roundButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    color: Colors.primary,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.grey,
+  },
+  header: {
+    borderBottomColor: Colors.grey,
+    borderWidth: StyleSheet.hairlineWidth,
+    height: 100,
+    backgroundColor: "#fff",
   },
 });
 
