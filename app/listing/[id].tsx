@@ -35,7 +35,7 @@ const Page = () => {
           <View style={{ flexDirection: "row", gap: 4 }}>
             <Ionicons name="star" size={16} />
             <Text style={styles.ratings}>
-              {listing.review_scores_rating / 20} · {listing.number_of_reviews}
+              {listing.review_scores_rating / 20} · {listing.number_of_reviews}{" "}
               reviews
             </Text>
           </View>
@@ -49,7 +49,7 @@ const Page = () => {
 
             <View>
               <Text style={{ fontWeight: "500", fontSize: 16 }}>
-                Hosted by{listing.host_name}
+                Hosted by {listing.host_name}
               </Text>
               <Text>Host since {listing.host_since}</Text>
             </View>
@@ -112,6 +112,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+  description: {
+    fontSize: 16,
+    marginTop: 10,
+    fontFamily: "mon-r",
   },
 });
 
