@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  FlatList,
   ListRenderItem,
   TouchableOpacity,
   StyleSheet,
@@ -13,18 +12,28 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import { Listing } from "@/interfaces/listing";
 import { defaultStyles } from "@/constants/Styles";
+import {
+  BottomSheetFlatList,
+  BottomSheetFlatListMethods,
+} from "@gorhom/bottom-sheet";
 
 interface Props {
   listings: any[];
   category: string;
+  refresh: number;
 }
 
-const Listings = ({ listings: items, category }: Props) => {
+const Listings = ({ listings: items, category, refresh }: Props) => {
   const [loading, setLoading] = useState(false);
-  const listRef = useRef<FlatList>(null);
+  const listRef = useRef<BottomSheetFlatListMethods>(null);
 
   useEffect(() => {
-    console.log("RELOAD LISTINGS: ", items.length);
+    if (refresh) {
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
+    }
+  }, [refresh]);
+
+  useEffect(() => {
     setLoading(true);
 
     setTimeout(() => {
@@ -78,10 +87,13 @@ const Listings = ({ listings: items, category }: Props) => {
 
   return (
     <View style={defaultStyles.container}>
-      <FlatList
+      <BottomSheetFlatList
         renderItem={renderRow}
         ref={listRef}
         data={loading ? [] : items}
+        ListHeaderComponent={
+          <Text style={styles.info}>{items.length} Homes</Text>
+        }
       />
     </View>
   );
@@ -97,6 +109,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300,
     borderRadius: 10,
+  },
+  info: {
+    textAlign: "center",
+    fontFamily: "mon-sb",
+    marginTop: 4,
   },
 });
 
