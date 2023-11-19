@@ -66,39 +66,46 @@ const Page = () => {
                   placeholderTextColor={Colors.grey}
                 />
               </View>
-
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  gap: 25,
-                }}
-              >
-                {places.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => setSelectedPlace(index)}
-                  >
-                    <Image
-                      source={item.img}
-                      style={
-                        selectedPlace === index
-                          ? styles.placeSelected
-                          : styles.place
-                      }
-                    />
-                    <Text
-                      style={{
-                        fontFamily: "mon-r",
-                        paddingTop: 6,
-                      }}
-                    >
-                      {item.title}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
             </Animated.View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 25,
+                paddingLeft: 20,
+                marginBottom: 30,
+              }}
+            >
+              {places.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => setSelectedPlace(index)}
+                >
+                  <Image
+                    source={item.img}
+                    style={
+                      selectedPlace === index
+                        ? styles.placeSelected
+                        : styles.place
+                    }
+                  />
+                  <Text
+                    style={[
+                      {
+                        paddingTop: 6,
+                      },
+                      selectedPlace === index
+                        ? {
+                            fontFamily: "mon-sb",
+                          }
+                        : { fontFamily: "mon-r" },
+                    ]}
+                  >
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </>
         )}
       </View>
@@ -241,7 +248,6 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
   },
   searchSection: {
     height: 50,
@@ -252,7 +258,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignContent: "center",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 4,
   },
   inputField: {
     flex: 1,
@@ -263,13 +269,13 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   place: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 10,
   },
   placeSelected: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: Colors.grey,
