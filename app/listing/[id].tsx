@@ -161,8 +161,8 @@ const Page = () => {
           }}
         >
           <TouchableOpacity style={styles.footerText}>
-            <Text style={styles.footerPrice}> $ {listing.price}</Text>
-            <Text style={styles.footerText}>night</Text>
+            <Text style={styles.footerPrice}> HKD {listing.price}</Text>
+            <Text>night</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[defaultStyles.btn, { paddingHorizontal: 20 }]}
