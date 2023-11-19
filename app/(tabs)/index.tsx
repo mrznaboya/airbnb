@@ -11,6 +11,7 @@ import ListingsBottomSheet from "@/components/ListingsBottomSheet";
 const Page = () => {
   const [category, setCategory] = useState("Tiny homes");
   const items = useMemo(() => listingsData as any, []);
+  const geoItems = useMemo(() => ListingsDataGeo, []);
 
   const onDataChanged = (category: string) => {
     setCategory(category);
@@ -23,7 +24,7 @@ const Page = () => {
         }}
       />
       {/* <Listings listings={items} category={category} /> */}
-      <ListingsMap listings={ListingsDataGeo} />
+      <ListingsMap listings={geoItems} />
       <ListingsBottomSheet listings={items} category={category} />
     </View>
   );
